@@ -1,2 +1,2 @@
 # l6ds-base
-Level 6 Data Science, Software Engineering
+Base repository for Level 6 Data Science modules.
