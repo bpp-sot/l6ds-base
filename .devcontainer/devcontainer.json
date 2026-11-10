@@ -1,7 +1,23 @@
 {
   "name": "L6 Data Science",
-  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+
+  // Prebuilt image (Python 3.12 + data-science stack + NLTK data), published
+  // from this repo by .github/workflows/publish-images.yml.
+  "image": "ghcr.io/bpp-sot/l6ds-base:latest",
+
+  // To build locally from the Dockerfile instead, replace "image" with:
+  // "build": {
+  //   "dockerfile": "Dockerfile",
+  //   "context": "..",
+  //   "target": "base"
+  // },
+
+  "remoteUser": "vscode",
+
+  // Quick no-op for the pre-installed packages; picks up anything you add to
+  // requirements.txt for your own project.
   "postCreateCommand": "pip install -r requirements.txt",
+
   "customizations": {
     "vscode": {
       "extensions": [
@@ -11,8 +27,12 @@
         "mechatroner.rainbow-csv"
       ],
       "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
         "editor.formatOnSave": true,
-        "notebook.formatOnSave.enabled": true
+        "notebook.formatOnSave.enabled": true,
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        }
       }
     }
   },
