@@ -26,9 +26,14 @@ jobs:
       matrix:
         include:
           - target: base
-            image: ghcr.io/bpp-sot/l6ds-base
+            name: l6ds-base
           - target: vscode
-            image: ghcr.io/bpp-sot/l6ds-vscode
+            name: l6ds-vscode
+    env:
+      # Docker Hub publishing is enabled by setting the repository variable
+      # DOCKERHUB_NAMESPACE (Docker Hub user or org) and the secrets
+      # DOCKERHUB_USERNAME / DOCKERHUB_TOKEN.
+      DOCKERHUB_NAMESPACE: ${{ vars.DOCKERHUB_NAMESPACE }}
     steps:
       - uses: actions/checkout@v4
 
@@ -40,10 +45,18 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - if: env.DOCKERHUB_NAMESPACE != ''
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
       - id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ matrix.image }}
+          images: |
+            ghcr.io/bpp-sot/${{ matrix.name }}
+            name=docker.io/${{ env.DOCKERHUB_NAMESPACE }}/${{ matrix.name }},enable=${{ env.DOCKERHUB_NAMESPACE != '' }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=semver,pattern={{version}}
