@@ -77,6 +77,14 @@ GitHub Actions (`.github/workflows/publish-images.yml`) builds both images and p
 
 The workflow only runs in `bpp-sot/l6ds-base`, not in repos created from the template.
 
+Images are always pushed to GHCR. They're also pushed to Docker Hub (as `<namespace>/l6ds-base` and `<namespace>/l6ds-vscode`), which Skillable needs, when these repository settings exist:
+
+| Setting | Kind | Value |
+| --- | --- | --- |
+| `DOCKERHUB_NAMESPACE` | Actions **variable** | Docker Hub user or organisation to publish under |
+| `DOCKERHUB_USERNAME` | Actions **secret** | Docker Hub user that owns the access token |
+| `DOCKERHUB_TOKEN` | Actions **secret** | Docker Hub personal or organisation access token with *Read & Write* access |
+
 To build locally:
 
 ```bash
